@@ -3,6 +3,9 @@ from actions import Action
 
 class Environment:
     def __init__(self):
+        self.reset()
+
+    def reset(self):
         self.actions = []
 
 
