@@ -9,10 +9,13 @@ class Environment:
     def step(self, action):
         reward = 0
         self.actions.append(action)
-        if len(self.actions) == 3:
+        if len(self.actions) == 4:
             for item in self.actions:
-                if item == big:
+                if item == Action.big:
                     reward -= item
                 else:
                     reward += item
-                
+        else:
+            reward += action
+
+        return reward
