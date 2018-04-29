@@ -1,59 +1,62 @@
 import sys
 from os.path import abspath, join, dirname
 sys.path.insert(0, abspath(join(dirname(__file__), ".."))) # brings the path to include the main directory
-from actions import Action
-from colorama import Fore, Back, Style
 
+# import format_test_output as TestOutput
+from format_test_output import TestOutput
 from environment import Environment
+from actions import Action
 
-RESULT = {"pass" : Fore.BLACK + Back.GREEN + "PASSED" + Style.RESET_ALL, 
-          "fail" : Fore.BLACK + Back.RED + "FAILED" + Style.RESET_ALL}
-
+# TestOutput.pass_test(test_name)
+    # TestOutput.fail_test(test_name)
 def test_step(environment):
+    test_name = "Environment.step "
+
     value, state = environment.step(Action.non)
     if value != 0 or state != 1:
-        print("{:<30} {:>35}".format("Environment failed step 1", RESULT['fail']))
+        TestOutput.fail_test(test_name + "1")
         return
 
     value, state = environment.step(Action.sml)
     if value != 0 or state != 2:
-        print("{:<30} {:>35}".format("Environment failed step 2", RESULT['fail']))
+        TestOutput.fail_test(test_name + "2")
         return
 
     value, state = environment.step(Action.med)
     if value != 0 or state != 3:
-        print("{:<30} {:>35}".format("Environment failed step 3", RESULT['fail']))
+        TestOutput.fail_test(test_name + "3")
         return
 
     value, state = environment.step(Action.big)
     if value != 0 or state != 4:
-        print("{:<30} {:>35}".format("Environment failed step 4", RESULT['fail']))
+        TestOutput.fail_test(test_name + "4")
         return
 
     value, state = environment.step(Action.non)
     if value != -1 or state != 0:
-        print("{:<30} {:>35}".format("Environment failed step 4", RESULT['fail']))
+        TestOutput.fail_test(test_name + "5")
         return
 
-    print("{:<30} {:>25}".format("Test Environment.step passed", RESULT['pass']))
+    TestOutput.pass_test(test_name)
     return True
 
 
 def test_reset(environment):
+    test_name = "Environment.reset"
     for _ in range(environment.max_actions - 1):
         environment.step(Action.non)
     environment.reset()
 
     if len(environment.actions) != 0:
-        print("{:<30} {:>35}".format("Environment reset", RESULT['fail']))
+        TestOutput.fail_test(test_name)
     else:
-        print("{:<30} {:>25}".format("Environment reset", RESULT['pass']))
+        TestOutput.pass_test(test_name)
         return True
 
 
 def main(argv):
     print("\nTesting environment")
-    print("-"*55)
+    print("-"*56)
     runall = False
     if len(argv) > 1:
         if argv[1] == "-true":

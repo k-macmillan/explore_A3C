@@ -3,51 +3,50 @@ from os.path import abspath, join, dirname
 sys.path.insert(0, abspath(join(dirname(__file__), ".."))) # brings the path to include the main directory
 import tensorflow as tf
 import numpy as np
-from colorama import Fore, Back, Style
 
+# import format_test_output as TestOutput
+from format_test_output import TestOutput
 from network import GlobalNetwork
 
-RESULT = {"pass" : Fore.BLACK + Back.GREEN + "PASSED" + Style.RESET_ALL, 
-          "fail" : Fore.BLACK + Back.RED + "FAILED" + Style.RESET_ALL}
 
 def test_input(sess, network):
-    # trainer = tf.train.AdamOptimizer(learning_rate=1e-4)
-    # network = GlobalNetwork("input_test", 3, 4, trainer)
-    
+    test_name = "Single batch input"
     test_input = np.array([1.0, 1.0, 1.0])
     test_input = np.reshape(test_input, (1, len(test_input))) # Have to reshape for the expected batch (first value)
     temp = sess.run(fetches=network.input,
                     feed_dict={network.input : test_input})
     for item in temp[0]:
         if item != test_input[0][0]:
-            print("{:<30} {:>35}".format("Single batch input", RESULT['fail']))
+            TestOutput.fail_test(test_name)
             return
 
-    print("{:<30} {:>25}".format("Single batch input", RESULT['pass']))
-    
+    TestOutput.pass_test(test_name)
+   
 
     # Test batch size of 3 on the same network
+    test_name = "Multi batch input"
     test_input = np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
     test_input = np.reshape(test_input, (3, 3)) # Have to reshape for the expected batch (first value)
     temp = sess.run(fetches=network.input,
                     feed_dict={network.input : test_input})
     for item in temp[0]:
         if item != test_input[0][0]:
-            print("{:<30} {:>35}".format("Multi batch input", RESULT['fail']))
+            TestOutput.fail_test(test_name)
             return
 
-    print("{:<30} {:>25}".format("Multi batch input", RESULT['pass']))
+    TestOutput.pass_test(test_name)
     return True
 
 def main(argv):
     print("\nTesting network")
-    print("-"*55)
+    print("-"*56)
     runall = False
     if len(argv) > 1:
         if argv[1] == "-true":
             runall = True
 
     try:
+        test_name = "TensorFlow session start"
         tf.reset_default_graph()
         trainer = tf.train.AdamOptimizer(learning_rate=0.01)
         network = GlobalNetwork("test", 3, 4, trainer)
@@ -55,10 +54,10 @@ def main(argv):
             sess.run(tf.global_variables_initializer())
             with sess.as_default(), sess.graph.as_default(): 
                 if sess.run(tf.constant(42)) != 42:
-                    print("{:<30} {:>35}".format("TensorFlow session start", RESULT['fail']))
+                    TestOutput.fail_test(test_name)
                     exit()
                 else:
-                    print("{:<30} {:>25}".format("TensorFlow session start", RESULT['pass']))
+                    TestOutput.pass_test(test_name)
 
                 assert(test_input(sess, network) or runall)
         return True
