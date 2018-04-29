@@ -22,5 +22,5 @@ If you use the Windows command prompt the test output will still be correct but 
 ### Simple Unit Tests
 Each unit test file can be ran individually or all can be ran together with `run_tests.py`. If any of the test files are called with a `-true` argument it will continue to run on failure, but will note the failure.
 
-![Basic example of Unit Tests](images/test_example.png "Unit Test example")
+![Basic example of Unit Tests](images/tests_example.png "Unit Test example")
 
