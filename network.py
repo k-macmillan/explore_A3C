@@ -1,6 +1,5 @@
 import tensorflow as tf
 
-
 class GlobalNetwork:
     def __init__(self, scope, input_size, action_size, trainer):
         self.scope = scope          # Names the scope (mostly important for TensorBoard graph)
@@ -20,7 +19,6 @@ class GlobalNetwork:
                                             activation=tf.nn.selu,
                                             bias_initializer=tf.random_uniform_initializer(-1, 1))
             self.q = tf.contrib.layers.fully_connected(inputs=self.h_layer2,
-                                                       num_outputs=2,
+                                                       num_outputs=4, # number of actions, we get probabilities of all at once
                                                        weights_initializer=tf.orthogonal_initializer(0.1))
-            
-            self.best = tf.argmax(self.q, axis=-1)
+
