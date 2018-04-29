@@ -2,6 +2,7 @@ from network import GlobalNetwork
 import tensorflow as tf
 import numpy as np
 from colorama import Fore, Back, Style
+from sys import argv
 
 RESULT = {"pass" : Fore.BLACK + Back.GREEN + "PASSED" + Style.RESET_ALL, 
           "fail" : Fore.BLACK + Back.RED + "FAILED" + Style.RESET_ALL}
@@ -35,9 +36,14 @@ def test_input(sess, network):
     print("{:<30} {:>25}".format("Multi batch input", RESULT['pass']))
     return True
 
-def main():
+def main(argv):
     print("\nTesting network")
     print("-"*55)
+    runall = False
+    if len(argv) > 1:
+        if argv[1] == "-true":
+            runall = True
+
     try:
         tf.reset_default_graph()
         trainer = tf.train.AdamOptimizer(learning_rate=0.01)
@@ -51,11 +57,11 @@ def main():
                 else:
                     print("{:<30} {:>25}".format("TensorFlow session start", RESULT['pass']))
 
-                assert(test_input(sess, network))
+                assert(test_input(sess, network) or runall)
         return True
     except AssertionError:
         print("Testing halted due to critical test failure\n")
         exit()
 
 if __name__ == '__main__':
-    main()
+    main(argv)

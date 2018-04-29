@@ -1,33 +1,34 @@
 from environment import Environment
 from actions import Action
 from colorama import Fore, Back, Style
+from sys import argv
 
 RESULT = {"pass" : Fore.BLACK + Back.GREEN + "PASSED" + Style.RESET_ALL, 
           "fail" : Fore.BLACK + Back.RED + "FAILED" + Style.RESET_ALL}
 
 def test_step(environment):
     value, state = environment.step(Action.non)
-    if value != 0 and state != 1:
+    if value != 0 or state != 1:
         print("{:<30} {:>35}".format("Environment failed step 1", RESULT['fail']))
         return
 
     value, state = environment.step(Action.sml)
-    if value != 0 and state != 2:
+    if value != 0 or state != 2:
         print("{:<30} {:>35}".format("Environment failed step 2", RESULT['fail']))
         return
 
     value, state = environment.step(Action.med)
-    if value != 0 and state != 3:
+    if value != 0 or state != 3:
         print("{:<30} {:>35}".format("Environment failed step 3", RESULT['fail']))
         return
 
     value, state = environment.step(Action.big)
-    if value != 0 and state != 4:
+    if value != 0 or state != 4:
         print("{:<30} {:>35}".format("Environment failed step 4", RESULT['fail']))
         return
 
     value, state = environment.step(Action.non)
-    if value != -1 and state != 0:
+    if value != -3 or state != 0: # -1
         print("{:<30} {:>35}".format("Environment failed step 4", RESULT['fail']))
         return
 
@@ -47,13 +48,18 @@ def test_reset(environment):
         return True
 
 
-def main():
+def main(argv):
     print("\nTesting environment")
     print("-"*55)
-    env = Environment()
+    runall = False
+    if len(argv) > 1:
+        if argv[1] == "-true":
+            runall = True
+
     try:
-        assert(test_step(env))
-        assert(test_reset(env))
+        env = Environment()
+        assert(test_step(env) or runall)
+        assert(test_reset(env) or runall)
         return True
     except AssertionError:
         print("Testing halted due to critical test failure\n")
@@ -61,4 +67,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(argv)
