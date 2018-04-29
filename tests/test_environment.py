@@ -16,7 +16,7 @@ def test_step(environment):
         return
 
     value, state = environment.step(Action.sml)
-    if value != 3 or state != 2:
+    if value != 0 or state != 2:
         print("{:<30} {:>35}".format("Environment failed step 2", RESULT['fail']))
         return
 
