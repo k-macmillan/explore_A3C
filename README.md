@@ -17,4 +17,9 @@ Test everything and make it look nice when testing.
 - [colorama](https://github.com/tartley/colorama)
 
 Note:
-If you use the Windows command prompt the test output will still be correct but will have extra characters. It is suggested that you use Git Bash or an equivalent. If someone knows how to tell which terminal the user is in then I can fix this, otherwise it stays as is :-)
+If you use the Windows command prompt the test output will still be correct but will have extra characters. It is suggested that you use Git Bash or an equivalent. If someone knows how to tell which terminal the user is in then I can fix this, otherwise it stays as is.
+
+### Simple Unit Tests
+Each unit test file can be ran individually or all can be ran together with `run_tests.py`. If any of the test files are called with a `-true` argument it will continue to run on failure, but will note the failure.
+![Basic example of Unit Tests](/images/test_examples.png "Unit Test example")
+
