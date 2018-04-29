@@ -1,6 +1,10 @@
+import sys
+from os.path import abspath, join, dirname
+sys.path.insert(0, abspath(join(dirname(__file__), ".."))) # brings the path to include the main directory
+
 import test_environment
 import test_global_network
-from sys import argv
+
 
 def main(argv):
     runall = False
@@ -12,8 +16,11 @@ def main(argv):
     try:
         assert(test_environment.main(args) or runall)
         assert(test_global_network.main(args) or runall)
+
     except AssertionError:
         print("Testing halted due to critical test failure\n")
 
+    print()
+
 if __name__ == "__main__":
-    main(argv)
+    main(sys.argv)

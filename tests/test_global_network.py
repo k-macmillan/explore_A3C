@@ -1,8 +1,11 @@
-from network import GlobalNetwork
+import sys
+from os.path import abspath, join, dirname
+sys.path.insert(0, abspath(join(dirname(__file__), ".."))) # brings the path to include the main directory
 import tensorflow as tf
 import numpy as np
 from colorama import Fore, Back, Style
-from sys import argv
+
+from network import GlobalNetwork
 
 RESULT = {"pass" : Fore.BLACK + Back.GREEN + "PASSED" + Style.RESET_ALL, 
           "fail" : Fore.BLACK + Back.RED + "FAILED" + Style.RESET_ALL}
@@ -64,4 +67,4 @@ def main(argv):
         exit()
 
 if __name__ == '__main__':
-    main(argv)
+    main(sys.argv)

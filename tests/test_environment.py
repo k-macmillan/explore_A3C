@@ -1,7 +1,10 @@
-from environment import Environment
+import sys
+from os.path import abspath, join, dirname
+sys.path.insert(0, abspath(join(dirname(__file__), ".."))) # brings the path to include the main directory
 from actions import Action
 from colorama import Fore, Back, Style
-from sys import argv
+
+from environment import Environment
 
 RESULT = {"pass" : Fore.BLACK + Back.GREEN + "PASSED" + Style.RESET_ALL, 
           "fail" : Fore.BLACK + Back.RED + "FAILED" + Style.RESET_ALL}
@@ -28,7 +31,7 @@ def test_step(environment):
         return
 
     value, state = environment.step(Action.non)
-    if value != -3 or state != 0: # -1
+    if value != -1 or state != 0:
         print("{:<30} {:>35}".format("Environment failed step 4", RESULT['fail']))
         return
 
@@ -67,4 +70,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    main(argv)
+    main(sys.argv)
