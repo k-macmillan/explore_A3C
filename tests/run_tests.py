@@ -7,6 +7,8 @@ import test_global_network
 
 
 def main(argv):
+    print("\nBeginning tests")
+    print("-"*56)
     runall = False
     args = [0, "False"]
     if len(argv) > 1:
@@ -20,7 +22,8 @@ def main(argv):
     except AssertionError:
         print("Testing halted due to critical test failure\n")
 
-    print()
+    print("\nEnd of tests")
+    print("-"*56 + "\n")
 
 if __name__ == "__main__":
     main(sys.argv)
